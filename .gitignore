@@ -1,0 +1,21 @@
+# Dependencias
+node_modules/
+
+# Logs de Node
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Archivos de entorno (buenas prácticas por si luego usas variables secretas)
+.env
+.env.local
+.env.*.local
+
+# Builds de producción (generados por Vite)
+dist/
+dist-ssr/
+
+# Archivos del sistema macOS
+.DS_Store
+.AppleDouble
+.LSOverride
