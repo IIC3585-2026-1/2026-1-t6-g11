@@ -2,24 +2,96 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Web Components T6</title>
-  <script src="components/campo-numerico.js" defer></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trabajo 6 – Web Components</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <script src="components/campo-numerico.js"       defer></script>
+  <script src="components/mi-slider.js"            defer></script>
+  <script src="components/mi-switch.js"            defer></script>
+  <script src="components/mi-breadcrumb.js"        defer></script>
+  <script src="components/mi-accordion.js"         defer></script>
+  <script src="components/mi-card.js"              defer></script>
+  <script src="components/mi-horizontal-scroll.js" defer></script>
 </head>
 <body>
 
-  <h2>campo-numerico</h2>
+  <h1>Trabajo 6 – Web Components</h1>
 
-  <campo-numerico value="0">Cantidad:</campo-numerico>
+  <section>
+    <h2>1. Campo numérico</h2>
+    <campo-numerico value="0">Number:</campo-numerico>
+    <campo-numerico value="42">Temperatura:</campo-numerico>
+  </section>
 
-  <campo-numerico value="42">Temperatura:</campo-numerico>
+  <section>
+    <h2>2. Slider</h2>
+    <mi-slider min="0" max="100" value="50" step="5" style="max-width: 300px;">
+      <mi-slider-label>0&#8451;</mi-slider-label>
+      <mi-slider-label position="25">25&#8451;</mi-slider-label>
+      <mi-slider-label position="50">50&#8451;</mi-slider-label>
+      <mi-slider-label position="75">75&#8451;</mi-slider-label>
+      <mi-slider-label position="100">100&#8451;</mi-slider-label>
+    </mi-slider>
+  </section>
 
-  <script>
-    document.querySelectorAll('campo-numerico').forEach(el => {
-      el.addEventListener('change', e => {
-        console.log('nuevo valor:', e.detail.value);
-      });
-    });
-  </script>
+  <section>
+    <h2>3. Switch</h2>
+    <mi-switch>
+      <span slot="checked-message">On</span>
+      <span slot="unchecked-message">Off</span>
+      <label>Captions:</label>
+    </mi-switch>
+
+    <mi-switch checked>
+      <span slot="checked-message">Activado</span>
+      <span slot="unchecked-message">Desactivado</span>
+      <label>Modo oscuro:</label>
+    </mi-switch>
+  </section>
+
+  <section>
+    <h2>4. Breadcrumb</h2>
+    <mi-breadcrumb>
+      <mi-breadcrumb-item href="#">Home</mi-breadcrumb-item>
+      <mi-breadcrumb-item href="#">Next Level Down</mi-breadcrumb-item>
+      <mi-breadcrumb-item>Current Location</mi-breadcrumb-item>
+    </mi-breadcrumb>
+  </section>
+
+  <section>
+    <h2>5. Acordeón</h2>
+    <mi-accordion style="max-width: 350px;">
+      <mi-accordion-item>
+        <span slot="heading">Item 1</span>
+        <div class="panel">Panel one content</div>
+      </mi-accordion-item>
+      <mi-accordion-item>
+        <span slot="heading">Item 2</span>
+        <div class="panel">Panel 2 content</div>
+      </mi-accordion-item>
+      <mi-accordion-item>
+        <span slot="heading">Item 3</span>
+        <div class="panel">Panel 3 content</div>
+      </mi-accordion-item>
+    </mi-accordion>
+  </section>
+
+  <section>
+    <h2>6. Tarjeta</h2>
+    <mi-card class="custom">Custom size using CSS</mi-card>
+    <mi-card>Default size</mi-card>
+  </section>
+
+  <section>
+    <h2>7. Horizontal Scroll</h2>
+    <mi-horizontal-scroll>
+      <mi-card>Card 1</mi-card>
+      <mi-card>Card 2</mi-card>
+      <mi-card>Card 3</mi-card>
+      <mi-card>Card 4</mi-card>
+    </mi-horizontal-scroll>
+  </section>
 
 </body>
 </html>
