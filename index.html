@@ -1,11 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test</title>
+  <meta charset="UTF-8" />
+  <title>Web Components T6</title>
+  <script src="components/campo-numerico.js" defer></script>
 </head>
 <body>
-    
+
+  <h2>campo-numerico</h2>
+
+  <campo-numerico value="0">Cantidad:</campo-numerico>
+
+  <campo-numerico value="42">Temperatura:</campo-numerico>
+
+  <script>
+    document.querySelectorAll('campo-numerico').forEach(el => {
+      el.addEventListener('change', e => {
+        console.log('nuevo valor:', e.detail.value);
+      });
+    });
+  </script>
+
 </body>
 </html>
