@@ -69,6 +69,9 @@ class CampoNumerico extends HTMLElement {
     const inc   = this.shadowRoot.querySelector('.btn-inc');
 
     input.value = this.getAttribute('value') ?? 0;
+    input.addEventListener('input', () => {
+      this._dispatch(input.value)
+    });
 
     dec.addEventListener('click', () => {
       input.value = Number(input.value) - 1;
@@ -89,6 +92,7 @@ class CampoNumerico extends HTMLElement {
     if (name === 'value') {
       const input = this.shadowRoot?.querySelector('input');
       if (input) input.value = newVal;
+      this._dispatch(input.value)
     }
   }
 

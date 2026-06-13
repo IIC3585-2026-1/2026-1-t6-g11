@@ -20,8 +20,11 @@
 
   <section>
     <h2>1. Campo numérico</h2>
-    <campo-numerico value="0">Number:</campo-numerico>
-    <campo-numerico value="42">Temperatura:</campo-numerico>
+    <campo-numerico id="number-input" value="0">Número:</campo-numerico>
+    <campo-numerico id="temperature-input" value="42">Temperatura:</campo-numerico>
+    <p>Número: <span id="number-text">0</span></p>
+    <p>Temperatura: <span id="temperature-text">42</span></p>
+
   </section>
 
   <section>
@@ -94,4 +97,19 @@
   </section>
 
 </body>
+
+<script>
+  const numberInput = document.getElementById("number-input")
+  const numberText = document.getElementById("number-text")
+  numberInput.addEventListener("change", (e) => {
+	  numberText.innerHTML = e.detail.value
+  })
+
+  const temperatureInput = document.getElementById("temperature-input")
+  const temperatureText = document.getElementById("temperature-text")
+  temperatureInput.addEventListener("change", (e) => {
+	  temperatureText.innerHTML = e.detail.value
+  })
+</script>
+
 </html>
