@@ -16,7 +16,6 @@
 </head>
 <body>
 
-  <!-- ============ HERO ============ -->
   <header class="hero">
     <p class="eyebrow">IIC3585 · Trabajo 6 · Grupo 11</p>
     <h1>Web Components<span class="dot">.</span></h1>
@@ -36,7 +35,6 @@
 
   <main>
 
-    <!-- ============ 1. CAMPO NUMÉRICO ============ -->
     <section class="comp">
       <div class="comp-head">
         <span class="num">01</span>
@@ -59,7 +57,6 @@
       <p class="note"><b>Encapsulación:</b> los botones y el input viven en el Shadow DOM, así que sus estilos no chocan con los de la página. El único canal de comunicación hacia afuera es el evento <code>change</code> con <code>detail.value</code>.</p>
     </section>
 
-    <!-- ============ 2. SLIDER ============ -->
     <section class="comp">
       <div class="comp-head">
         <span class="num">02</span>
@@ -90,7 +87,6 @@
       <p class="note"><b>Encapsulación:</b> las etiquetas se pasan como hijos (<code>&lt;mi-slider-label&gt;</code>) y el componente las reposiciona internamente según su atributo <code>position</code>. La página no necesita saber cómo se dibuja la barra por dentro.</p>
     </section>
 
-    <!-- ============ 3. SWITCH ============ -->
     <section class="comp">
       <div class="comp-head">
         <span class="num">03</span>
@@ -125,7 +121,6 @@
       <p class="note"><b>Encapsulación:</b> el atributo <code>checked</code> refleja el estado y se observa con <code>observedAttributes</code>; los <em>slots</em> dejan que la página personalice el texto sin tocar el interior del componente.</p>
     </section>
 
-    <!-- ============ 4. BREADCRUMB ============ -->
     <section class="comp">
       <div class="comp-head">
         <span class="num">04</span>
@@ -152,7 +147,6 @@
       <p class="note"><b>Encapsulación:</b> el separador <code>/</code> se dibuja con CSS (<code>::after</code>) dentro del Shadow DOM, no como texto en el markup. El componente decide su propia tipografía y espaciado sin que la página interfiera.</p>
     </section>
 
-    <!-- ============ 5. ACORDEÓN ============ -->
     <section class="comp">
       <div class="comp-head">
         <span class="num">05</span>
@@ -190,7 +184,6 @@
       <p class="note"><b>Encapsulación:</b> la animación de apertura (<code>max-height</code> + rotación del ícono) está toda en el Shadow DOM y se dispara con el atributo <code>open</code>. El contenido del panel se pasa por <em>slot</em>, así cada ítem lo define la página.</p>
     </section>
 
-    <!-- ============ 6. TARJETA ============ -->
     <section class="comp">
       <div class="comp-head">
         <span class="num">06</span>
@@ -217,7 +210,6 @@ mi-card.custom {
       <p class="note"><b>Encapsulación:</b> las <em>CSS custom properties</em> (<code>--card-width</code>, <code>--card-height</code>) son el único canal de estilo que cruza el shadow boundary. La página las define con <code>var()</code> y el componente las consume por dentro — todo lo demás queda aislado.</p>
     </section>
 
-    <!-- ============ 7. HORIZONTAL SCROLL ============ -->
     <section class="comp">
       <div class="comp-head">
         <span class="num">07</span>
@@ -252,7 +244,6 @@ mi-card.custom {
     <p>Grupo 11 - Tarea 6</p>
   </footer>
 
-  <!-- Pequeño script vanilla para mostrar la interactividad (los eventos que emiten los componentes) -->
   <script type="module">
     const wire = (id, outId, key) => {
       const el = document.getElementById(id);
