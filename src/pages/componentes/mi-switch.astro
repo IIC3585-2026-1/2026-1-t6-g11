@@ -1,0 +1,146 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+import Playground from '../../components/doc/Playground.astro';
+import CodeTabs from '../../components/doc/CodeTabs.astro';
+
+// Importamos el CÓDIGO FUENTE del web component como texto (?raw, de Vite)
+// para inyectarlo dentro del iframe del playground. Así el editor es
+// autocontenido y no depende de rutas.
+import switchSrc from '../../components/web-components/mi-switch.js?raw';
+
+// Las tres islas reales (se renderizan vivas más abajo).
+import SwitchReact from '../../components/islands/SwitchDemo.jsx';
+import SwitchVue from '../../components/islands/SwitchDemo.vue';
+import SwitchSvelte from '../../components/islands/SwitchDemo.svelte';
+
+const ejemploInicial = `<mi-switch>
+  <span slot="checked-message">On</span>
+  <span slot="unchecked-message">Off</span>
+  <label>Captions:</label>
+</mi-switch>
+
+<mi-switch checked>
+  <span slot="checked-message">Activado</span>
+  <span slot="unchecked-message">Desactivado</span>
+  <label>Modo oscuro:</label>
+</mi-switch>`;
+
+const htmlCode = `<mi-switch>
+  <span slot="checked-message">On</span>
+  <span slot="unchecked-message">Off</span>
+  <label>Captions:</label>
+</mi-switch>
+
+<script>
+  document.querySelector('mi-switch')
+    .addEventListener('change', (e) => console.log(e.detail.checked));
+<\/script>`;
+
+const reactCode = `import { useEffect, useRef, useState } from 'react';
+
+export default function SwitchDemo() {
+  const ref = useRef(null);
+  const [estado, setEstado] = useState('Off');
+
+  // React no mapea CustomEvent a onChange: ref + addEventListener.
+  useEffect(() => {
+    const el = ref.current;
+    const onChange = (e) => setEstado(e.detail.checked ? 'On' : 'Off');
+    el.addEventListener('change', onChange);
+    return () => el.removeEventListener('change', onChange);
+  }, []);
+
+  return (
+    <mi-switch ref={ref}>
+      <span slot="checked-message">On</span>
+      <span slot="unchecked-message">Off</span>
+      <label>Captions:</label>
+    </mi-switch>
+  );
+}`;
+
+const vueCode = `<script setup>
+import { ref } from 'vue';
+const estado = ref('Off');
+// @change se compila a addEventListener('change'). Limpio.
+const onChange = (e) => (estado.value = e.detail.checked ? 'On' : 'Off');
+<\/script>
+
+<template>
+  <mi-switch @change="onChange">
+    <span slot="checked-message">On</span>
+    <span slot="unchecked-message">Off</span>
+    <label>Captions:</label>
+  </mi-switch>
+</template>
+
+<!-- Recuerda el isCustomElement en astro.config.mjs -->`;
+
+const svelteCode = `<script>
+  import { onMount } from 'svelte';
+  let el;
+  let estado = 'Off';
+  onMount(() => {
+    const onChange = (e) => (estado = e.detail.checked ? 'On' : 'Off');
+    el.addEventListener('change', onChange);
+    return () => el.removeEventListener('change', onChange);
+  });
+<\/script>
+
+<mi-switch bind:this={el}>
+  <span slot="checked-message">On</span>
+  <span slot="unchecked-message">Off</span>
+  <label>Captions:</label>
+</mi-switch>`;
+---
+
+<DocsLayout title="Switch">
+  <p class="eyebrow">Componente · 03</p>
+  <h1>&lt;mi-switch&gt;</h1>
+  <p class="lead">Un toggle on/off con mensaje configurable por slot.</p>
+
+  <p>
+    Atributo <code>checked</code> (refleja y observa el estado), slots
+    <code>checked-message</code> y <code>unchecked-message</code> para el texto,
+    y emite un evento <code>change</code> con <code>detail.checked</code>.
+  </p>
+
+  <h2>Pruébalo</h2>
+  <p>Edita el HTML y mira el resultado. Vive dentro de su propio shadow boundary.</p>
+  <Playground code={ejemploInicial} modules={[switchSrc]} height={140} />
+
+  <h2>El mismo componente, en cada framework</h2>
+  <p>
+    Esto es lo interesante: <strong>no hay versiones distintas del componente</strong>.
+    Es el mismo <code>&lt;mi-switch&gt;</code>. Solo cambia cómo cada framework
+    se suscribe a su evento <code>change</code>.
+  </p>
+
+  <CodeTabs
+    tabs={[
+      { label: 'HTML', lang: 'html', code: htmlCode },
+      { label: 'React', lang: 'jsx', code: reactCode },
+      { label: 'Vue', lang: 'vue', code: vueCode },
+      { label: 'Svelte', lang: 'svelte', code: svelteCode },
+    ]}
+  />
+
+  <div class="note">
+    <strong>El detalle que vale documentar:</strong> Vue mapea <code>@change</code>
+    a <code>addEventListener</code> automáticamente. React y Svelte no tienen azúcar
+    fiable para eventos custom, así que usas un ref + <code>addEventListener</code> — que,
+    de paso, es la forma que funciona en todos lados.
+  </div>
+
+  <h2>Islas vivas</h2>
+  <p>Las tres demos de abajo son islas reales hidratadas, cada una en su framework:</p>
+
+  <p class="eyebrow">React</p>
+  <SwitchReact client:visible />
+
+  <p class="eyebrow">Vue</p>
+  <SwitchVue client:visible />
+
+  <p class="eyebrow">Svelte</p>
+  <SwitchSvelte client:visible />
+</DocsLayout>

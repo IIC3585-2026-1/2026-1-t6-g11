@@ -1,0 +1,172 @@
+---
+// Playground editable en vivo (estilo "Try it Yourself").
+//
+// Cómo funciona:
+//  - Recibe `modules`: el CÓDIGO FUENTE (string) de los web components que
+//    la demo necesita. Se obtiene en la página con `import src from '...?raw'`.
+//  - Recibe `code`: el HTML inicial editable.
+//  - Construye un srcdoc completo (los módulos + el HTML del usuario) y lo
+//    mete en un <iframe>. Al editar el textarea, reconstruye el srcdoc.
+//
+// Es autocontenido: el iframe no importa nada por red ni del bundle de Astro,
+// por eso funciona igual en dev y en build.
+
+interface Props {
+  code: string;
+  modules: string[];
+  /** alto del preview en px */
+  height?: number;
+}
+
+const { code, modules, height = 160 } = Astro.props;
+
+// Serializamos para el script de cliente sin pelearnos con comillas/escapes.
+const payload = JSON.stringify({ code, modules, height });
+const id = 'pg-' + Math.random().toString(36).slice(2, 9);
+---
+
+<div class="playground" data-playground={id}>
+  <div class="pg-bar">
+    <span class="pg-tag">editable</span>
+    <button type="button" class="pg-run" data-run>Run ▸</button>
+    <button type="button" class="pg-reset" data-reset>Reset</button>
+  </div>
+  <div class="pg-grid">
+    <label class="pg-editor">
+      <span class="pg-label">HTML</span>
+      <textarea spellcheck="false" data-code>{code}</textarea>
+    </label>
+    <div class="pg-preview">
+      <span class="pg-label">resultado — dentro del shadow boundary</span>
+      <iframe data-frame title="Vista previa en vivo" style={`height:${height}px`}></iframe>
+    </div>
+  </div>
+
+  <script type="application/json" data-payload set:html={payload}></script>
+</div>
+
+<script>
+  // Se ejecuta en el navegador para cada playground de la página.
+  function initPlaygrounds() {
+    document.querySelectorAll('[data-playground]').forEach((root) => {
+      if (root.dataset.ready) return;
+      root.dataset.ready = '1';
+
+      const payloadEl = root.querySelector('[data-payload]');
+      const { code: initial, modules } = JSON.parse(payloadEl.textContent);
+
+      const textarea = root.querySelector('[data-code]');
+      const frame = root.querySelector('[data-frame]');
+      const runBtn = root.querySelector('[data-run]');
+      const resetBtn = root.querySelector('[data-reset]');
+
+      const scripts = modules
+        .map((src) => `<scr` + `ipt type="module">${src}<\/scr` + `ipt>`)
+        .join('\n');
+
+      function render() {
+        const userHtml = textarea.value;
+        frame.srcdoc = `<!doctype html>
+<html lang="es"><head><meta charset="utf-8">
+<style>
+  body { font-family: system-ui, sans-serif; margin: 0; padding: 18px;
+         display: flex; align-items: center; gap: 16px; flex-wrap: wrap; color:#16181d; }
+</style>
+${scripts}
+</head><body>
+${userHtml}
+</body></html>`;
+      }
+
+      // debounce simple para no recargar en cada tecla
+      let t;
+      textarea.addEventListener('input', () => {
+        clearTimeout(t);
+        t = setTimeout(render, 350);
+      });
+      runBtn.addEventListener('click', render);
+      resetBtn.addEventListener('click', () => {
+        textarea.value = initial;
+        render();
+      });
+
+      render();
+    });
+  }
+
+  initPlaygrounds();
+  // Por si Astro usa View Transitions al navegar entre páginas:
+  document.addEventListener('astro:page-load', initPlaygrounds);
+</script>
+
+<style>
+  .playground {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+    margin: 1.25rem 0;
+  }
+  .pg-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+  }
+  .pg-tag {
+    font: 600 11px var(--mono);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-right: auto;
+  }
+  .pg-run, .pg-reset {
+    font: 500 12px var(--mono);
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--line);
+    background: #fff;
+    cursor: pointer;
+  }
+  .pg-run { border-color: var(--accent); color: var(--accent); }
+  .pg-run:hover { background: var(--accent-soft); }
+  .pg-reset:hover { background: var(--paper); }
+  .pg-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  @media (max-width: 720px) { .pg-grid { grid-template-columns: 1fr; } }
+  .pg-label {
+    display: block;
+    font: 500 10px var(--mono);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 8px 12px 4px;
+  }
+  .pg-editor textarea {
+    width: 100%;
+    min-height: 160px;
+    border: none;
+    border-right: 1px solid var(--line);
+    padding: 4px 12px 14px;
+    font: 13px/1.6 var(--mono);
+    color: var(--ink);
+    resize: vertical;
+    outline: none;
+    background: #fcfcfb;
+  }
+  @media (max-width: 720px) {
+    .pg-editor textarea { border-right: none; border-bottom: 1px solid var(--line); }
+  }
+  .pg-preview iframe {
+    width: 100%;
+    border: none;
+    /* el shadow boundary, hecho visible: la firma del sitio */
+    border-top: 2px dashed var(--accent);
+    background:
+      repeating-linear-gradient(45deg, transparent, transparent 9px, var(--paper) 9px, var(--paper) 10px);
+  }
+</style>

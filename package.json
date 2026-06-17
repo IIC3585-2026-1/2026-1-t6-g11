@@ -1,23 +1,26 @@
 {
   "name": "2026-1-t6-g11",
+  "type": "module",
   "version": "1.0.0",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/IIC3585-2026-1/2026-1-t6-g11.git"
+  "dependencies": {
+    "@astrojs/react": "^5.0.7",
+    "@astrojs/svelte": "^8.1.2",
+    "@astrojs/vue": "^6.0.1",
+    "astro": "^6.0.0",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "svelte": "^5.56.3",
+    "vue": "^3.5.38"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/IIC3585-2026-1/2026-1-t6-g11/issues"
-  },
-  "homepage": "https://github.com/IIC3585-2026-1/2026-1-t6-g11#readme",
-  "description": "",
   "devDependencies": {
-    "vite": "^8.0.16"
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "typescript": "^6.0.3"
   }
 }

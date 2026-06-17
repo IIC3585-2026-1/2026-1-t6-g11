@@ -1,0 +1,152 @@
+---
+interface Props {
+  title: string;
+}
+const { title } = Astro.props;
+
+const componentes = [
+  { slug: 'mi-switch', nombre: 'Switch' },
+  { slug: 'campo-numerico', nombre: 'Campo numérico' },
+  { slug: 'mi-slider', nombre: 'Slider' },
+  { slug: 'mi-breadcrumb', nombre: 'Breadcrumb' },
+  { slug: 'mi-accordion', nombre: 'Acordeón' },
+  { slug: 'mi-card', nombre: 'Tarjeta' },
+  { slug: 'mi-horizontal-scroll', nombre: 'Horizontal scroll' },
+];
+const path = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title} · Componentes</title>
+
+    <!-- GOTCHA #2: registramos los web components SOLO aquí, en un <script>
+         de cliente. Nunca en el frontmatter, porque customElements/HTMLElement
+         no existen en el servidor y romperían el build (SSR). -->
+    <script>
+      import '../components/web-components/register.js';
+    </script>
+  </head>
+  <body>
+    <aside class="sidebar">
+      <a class="brand" href="/">
+        <span class="brand-mark">&lt;/&gt;</span>
+        Web Components
+      </a>
+      <nav>
+        {componentes.map((c) => (
+          <a
+            href={`/componentes/${c.slug}`}
+            class:list={['nav-item', { active: path.includes(c.slug) }]}
+          >{c.nombre}</a>
+        ))}
+      </nav>
+    </aside>
+
+    <main>
+      <slot />
+    </main>
+
+    <style is:global>
+      :root {
+        --ink: #16181d;
+        --paper: #f4f2ec;
+        --muted: #6b6f76;
+        --line: #e3e0d7;
+        --accent: #5a3fd6;
+        --accent-soft: #ece7fb;
+        --mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, monospace;
+        --sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+      }
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      body {
+        font-family: var(--sans);
+        color: var(--ink);
+        background: #fbfaf7;
+        display: grid;
+        grid-template-columns: 240px 1fr;
+        min-height: 100vh;
+      }
+      @media (max-width: 720px) {
+        body { grid-template-columns: 1fr; }
+      }
+
+      .sidebar {
+        border-right: 1px solid var(--line);
+        padding: 28px 18px;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        background: #fbfaf7;
+      }
+      @media (max-width: 720px) {
+        .sidebar { position: static; height: auto; border-right: none;
+                   border-bottom: 1px solid var(--line); }
+      }
+      .brand {
+        display: flex; align-items: center; gap: 10px;
+        font: 700 15px var(--sans);
+        color: var(--ink); text-decoration: none;
+        margin-bottom: 28px;
+      }
+      .brand-mark {
+        font: 700 13px var(--mono);
+        color: var(--accent);
+        border: 1px dashed var(--accent);
+        border-radius: 6px;
+        padding: 3px 6px;
+      }
+      .nav-item {
+        display: block;
+        padding: 8px 10px;
+        border-radius: 7px;
+        font-size: 14px;
+        color: var(--muted);
+        text-decoration: none;
+      }
+      .nav-item:hover { background: var(--paper); color: var(--ink); }
+      .nav-item.active {
+        background: var(--accent-soft);
+        color: var(--accent);
+        font-weight: 600;
+      }
+
+      main {
+        padding: 56px clamp(24px, 6vw, 88px);
+        max-width: 900px;
+      }
+      main h1 {
+        font-size: clamp(1.8rem, 4vw, 2.4rem);
+        letter-spacing: -0.02em;
+        margin-bottom: 12px;
+      }
+      main h2 {
+        font-size: 1.15rem;
+        margin: 40px 0 8px;
+        letter-spacing: -0.01em;
+      }
+      main p { color: #3a3d44; line-height: 1.7; margin: 8px 0; }
+      main p code, main li code {
+        font: 0.86em var(--mono);
+        background: var(--accent-soft);
+        color: var(--accent);
+        padding: 1px 5px; border-radius: 4px;
+      }
+      .lead { font-size: 1.1rem; color: var(--muted); margin-bottom: 8px; }
+      .eyebrow {
+        font: 600 12px var(--mono);
+        letter-spacing: 0.08em; text-transform: uppercase;
+        color: var(--accent); margin-bottom: 10px;
+      }
+      .note {
+        border-left: 2px dashed var(--accent);
+        background: var(--accent-soft);
+        padding: 12px 16px; border-radius: 0 8px 8px 0;
+        font-size: 0.92rem; margin: 16px 0;
+      }
+    </style>
+  </body>
+</html>
