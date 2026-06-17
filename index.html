@@ -6,110 +6,264 @@
   <title>Trabajo 6 – Web Components</title>
   <link rel="stylesheet" href="style.css" />
 
-  <script type="module" src="components/campo-numerico.js"       defer></script>
-  <script type="module" src="components/mi-slider.js"            defer></script>
-  <script type="module" src="components/mi-switch.js"            defer></script>
-  <script type="module" src="components/mi-breadcrumb.js"        defer></script>
-  <script type="module" src="components/mi-accordion.js"         defer></script>
-  <script type="module" src="components/mi-card.js"              defer></script>
-  <script src="components/mi-horizontal-scroll.js" defer></script>
+  <script type="module" src="components/campo-numerico.js"     defer></script>
+  <script type="module" src="components/mi-slider.js"          defer></script>
+  <script type="module" src="components/mi-switch.js"          defer></script>
+  <script type="module" src="components/mi-breadcrumb.js"      defer></script>
+  <script type="module" src="components/mi-accordion.js"       defer></script>
+  <script type="module" src="components/mi-card.js"            defer></script>
+  <script src="components/mi-horizontal-scroll.js"             defer></script>
 </head>
 <body>
 
-  <h1>Trabajo 6 – Web Components</h1>
+  <!-- ============ HERO ============ -->
+  <header class="hero">
+    <p class="eyebrow">IIC3585 · Trabajo 6 · Grupo 11</p>
+    <h1>Web Components<span class="dot">.</span></h1>
+    <p class="tagline">
+      Siete componentes construidos solo con los estándares de la plataforma:
+      <strong>HTML templates</strong>, <strong>Custom Elements</strong> y
+      <strong>Shadow DOM</strong>. Sin frameworks. Sin build. Reutilizables en
+      cualquier página.
+    </p>
+    <p class="hint">
+      Cada demo de abajo vive dentro de un
+      <span class="boundary-chip">borde punteado</span>: ese es el
+      <em>shadow boundary</em>, la frontera que aísla los estilos y el markup
+      interno del componente del resto de la página.
+    </p>
+  </header>
 
-  <section>
-    <h2>1. Campo numérico</h2>
-    <campo-numerico id="number-input" value="0">Número:</campo-numerico>
-    <campo-numerico id="temperature-input" value="42">Temperatura:</campo-numerico>
-    <p>Número: <span id="number-text">0</span></p>
-    <p>Temperatura: <span id="temperature-text">42</span></p>
+  <main>
 
-  </section>
+    <!-- ============ 1. CAMPO NUMÉRICO ============ -->
+    <section class="comp">
+      <div class="comp-head">
+        <span class="num">01</span>
+        <div>
+          <h2>Campo numérico</h2>
+          <p class="purpose">Un input de número con botones para incrementar y decrementar. Emite un evento <code>change</code> cada vez que el valor cambia, ya sea por los botones o escribiendo directo.</p>
+        </div>
+      </div>
 
-  <section>
-    <h2>2. Slider</h2>
-    <mi-slider min="0" max="100" value="50" step="5" style="max-width: 300px;">
-      <mi-slider-label>0&#8451;</mi-slider-label>
-      <mi-slider-label position="25">25&#8451;</mi-slider-label>
-      <mi-slider-label position="50">50&#8451;</mi-slider-label>
-      <mi-slider-label position="75">75&#8451;</mi-slider-label>
-      <mi-slider-label position="100">100&#8451;</mi-slider-label>
-    </mi-slider>
-  </section>
+      <div class="demo-shadow" data-label="Shadow DOM">
+        <campo-numerico id="cn-num" value="0">Número:</campo-numerico>
+        <campo-numerico id="cn-temp" value="42">Temperatura:</campo-numerico>
+      </div>
 
-  <section>
-    <h2>3. Switch</h2>
-    <mi-switch>
-      <span slot="checked-message">On</span>
-      <span slot="unchecked-message">Off</span>
-      <label>Captions:</label>
-    </mi-switch>
+      <p class="live">Escuchando el evento desde la página → Número: <strong id="out-num">0</strong> · Temperatura: <strong id="out-temp">42</strong></p>
 
-    <mi-switch checked>
-      <span slot="checked-message">Activado</span>
-      <span slot="unchecked-message">Desactivado</span>
-      <label>Modo oscuro:</label>
-    </mi-switch>
-  </section>
+      <pre class="code"><code>&lt;campo-numerico value="0"&gt;Número:&lt;/campo-numerico&gt;
+&lt;campo-numerico value="42"&gt;Temperatura:&lt;/campo-numerico&gt;</code></pre>
 
-  <section>
-    <h2>4. Breadcrumb</h2>
-    <mi-breadcrumb>
-      <mi-breadcrumb-item href="#">Home</mi-breadcrumb-item>
-      <mi-breadcrumb-item href="#">Next Level Down</mi-breadcrumb-item>
-      <mi-breadcrumb-item>Current Location</mi-breadcrumb-item>
-    </mi-breadcrumb>
-  </section>
+      <p class="note"><b>Encapsulación:</b> los botones y el input viven en el Shadow DOM, así que sus estilos no chocan con los de la página. El único canal de comunicación hacia afuera es el evento <code>change</code> con <code>detail.value</code>.</p>
+    </section>
 
-  <section>
-    <h2>5. Acordeón</h2>
-    <mi-accordion style="max-width: 350px;">
-      <mi-accordion-item>
-        <span slot="heading">Item 1</span>
-        <div class="panel">Panel one content</div>
-      </mi-accordion-item>
-      <mi-accordion-item>
-        <span slot="heading">Item 2</span>
-        <div class="panel">Panel 2 content</div>
-      </mi-accordion-item>
-      <mi-accordion-item>
-        <span slot="heading">Item 3</span>
-        <div class="panel">Panel 3 content</div>
-      </mi-accordion-item>
-    </mi-accordion>
-  </section>
+    <!-- ============ 2. SLIDER ============ -->
+    <section class="comp">
+      <div class="comp-head">
+        <span class="num">02</span>
+        <div>
+          <h2>Slider</h2>
+          <p class="purpose">Un control deslizante con burbuja de valor y etiquetas posicionadas por porcentaje. Útil para rangos como temperatura, volumen o brillo.</p>
+        </div>
+      </div>
 
-  <section>
-    <h2>6. Tarjeta</h2>
-    <mi-card class="custom">Custom size using CSS</mi-card>
-    <mi-card>Default size</mi-card>
-  </section>
+      <div class="demo-shadow" data-label="Shadow DOM">
+        <mi-slider id="sl" min="0" max="100" value="50" step="5" style="max-width: 320px;">
+          <mi-slider-label>0&#8451;</mi-slider-label>
+          <mi-slider-label position="25">25&#8451;</mi-slider-label>
+          <mi-slider-label position="50">50&#8451;</mi-slider-label>
+          <mi-slider-label position="75">75&#8451;</mi-slider-label>
+          <mi-slider-label position="100">100&#8451;</mi-slider-label>
+        </mi-slider>
+      </div>
 
-  <section>
-    <h2>7. Horizontal Scroll</h2>
-    <mi-horizontal-scroll>
-      <mi-card>Card 1</mi-card>
-      <mi-card>Card 2</mi-card>
-      <mi-card>Card 3</mi-card>
-      <mi-card>Card 4</mi-card>
-    </mi-horizontal-scroll>
-  </section>
+      <p class="live">Valor actual → <strong id="out-sl">50</strong></p>
+
+      <pre class="code"><code>&lt;mi-slider min="0" max="100" value="50" step="5"&gt;
+  &lt;mi-slider-label&gt;0℃&lt;/mi-slider-label&gt;
+  &lt;mi-slider-label position="50"&gt;50℃&lt;/mi-slider-label&gt;
+  &lt;mi-slider-label position="100"&gt;100℃&lt;/mi-slider-label&gt;
+&lt;/mi-slider&gt;</code></pre>
+
+      <p class="note"><b>Encapsulación:</b> las etiquetas se pasan como hijos (<code>&lt;mi-slider-label&gt;</code>) y el componente las reposiciona internamente según su atributo <code>position</code>. La página no necesita saber cómo se dibuja la barra por dentro.</p>
+    </section>
+
+    <!-- ============ 3. SWITCH ============ -->
+    <section class="comp">
+      <div class="comp-head">
+        <span class="num">03</span>
+        <div>
+          <h2>Switch</h2>
+          <p class="purpose">Un interruptor on/off con mensaje configurable según el estado. El texto de cada estado se inyecta por <em>slot</em>, así que el mismo componente sirve para "On/Off", "Activado/Desactivado", etc.</p>
+        </div>
+      </div>
+
+      <div class="demo-shadow" data-label="Shadow DOM">
+        <mi-switch>
+          <span slot="checked-message">On</span>
+          <span slot="unchecked-message">Off</span>
+          <label>Captions:</label>
+        </mi-switch>
+
+        <mi-switch checked>
+          <span slot="checked-message">Activado</span>
+          <span slot="unchecked-message">Desactivado</span>
+          <label>Modo oscuro:</label>
+        </mi-switch>
+      </div>
+
+      <pre class="code"><code>&lt;mi-switch&gt;
+  &lt;span slot="checked-message"&gt;On&lt;/span&gt;
+  &lt;span slot="unchecked-message"&gt;Off&lt;/span&gt;
+  &lt;label&gt;Captions:&lt;/label&gt;
+&lt;/mi-switch&gt;
+
+&lt;mi-switch checked&gt; ... &lt;/mi-switch&gt;  &lt;!-- mismo componente, otro estado --&gt;</code></pre>
+
+      <p class="note"><b>Encapsulación:</b> el atributo <code>checked</code> refleja el estado y se observa con <code>observedAttributes</code>; los <em>slots</em> dejan que la página personalice el texto sin tocar el interior del componente.</p>
+    </section>
+
+    <!-- ============ 4. BREADCRUMB ============ -->
+    <section class="comp">
+      <div class="comp-head">
+        <span class="num">04</span>
+        <div>
+          <h2>Breadcrumb</h2>
+          <p class="purpose">Migas de pan para navegación: muestra la ruta jerárquica donde está el usuario. Los ítems con <code>href</code> son enlaces; el último, sin <code>href</code>, es la ubicación actual.</p>
+        </div>
+      </div>
+
+      <div class="demo-shadow" data-label="Shadow DOM">
+        <mi-breadcrumb>
+          <mi-breadcrumb-item href="#">Home</mi-breadcrumb-item>
+          <mi-breadcrumb-item href="#">Next Level Down</mi-breadcrumb-item>
+          <mi-breadcrumb-item>Current Location</mi-breadcrumb-item>
+        </mi-breadcrumb>
+      </div>
+
+      <pre class="code"><code>&lt;mi-breadcrumb&gt;
+  &lt;mi-breadcrumb-item href="#"&gt;Home&lt;/mi-breadcrumb-item&gt;
+  &lt;mi-breadcrumb-item href="#"&gt;Next Level Down&lt;/mi-breadcrumb-item&gt;
+  &lt;mi-breadcrumb-item&gt;Current Location&lt;/mi-breadcrumb-item&gt;
+&lt;/mi-breadcrumb&gt;</code></pre>
+
+      <p class="note"><b>Encapsulación:</b> el separador <code>/</code> se dibuja con CSS (<code>::after</code>) dentro del Shadow DOM, no como texto en el markup. El componente decide su propia tipografía y espaciado sin que la página interfiera.</p>
+    </section>
+
+    <!-- ============ 5. ACORDEÓN ============ -->
+    <section class="comp">
+      <div class="comp-head">
+        <span class="num">05</span>
+        <div>
+          <h2>Acordeón</h2>
+          <p class="purpose">Paneles colapsables: cada ítem muestra un encabezado y oculta su contenido hasta que se hace clic. Ideal para FAQs o secciones largas. Permite varios ítems abiertos a la vez.</p>
+        </div>
+      </div>
+
+      <div class="demo-shadow" data-label="Shadow DOM">
+        <mi-accordion style="max-width: 380px;">
+          <mi-accordion-item>
+            <span slot="heading">Item 1</span>
+            <div class="panel">Panel one content</div>
+          </mi-accordion-item>
+          <mi-accordion-item>
+            <span slot="heading">Item 2</span>
+            <div class="panel">Panel 2 content</div>
+          </mi-accordion-item>
+          <mi-accordion-item>
+            <span slot="heading">Item 3</span>
+            <div class="panel">Panel 3 content</div>
+          </mi-accordion-item>
+        </mi-accordion>
+      </div>
+
+      <pre class="code"><code>&lt;mi-accordion&gt;
+  &lt;mi-accordion-item&gt;
+    &lt;span slot="heading"&gt;Item 1&lt;/span&gt;
+    &lt;div&gt;Panel one content&lt;/div&gt;
+  &lt;/mi-accordion-item&gt;
+  ...
+&lt;/mi-accordion&gt;</code></pre>
+
+      <p class="note"><b>Encapsulación:</b> la animación de apertura (<code>max-height</code> + rotación del ícono) está toda en el Shadow DOM y se dispara con el atributo <code>open</code>. El contenido del panel se pasa por <em>slot</em>, así cada ítem lo define la página.</p>
+    </section>
+
+    <!-- ============ 6. TARJETA ============ -->
+    <section class="comp">
+      <div class="comp-head">
+        <span class="num">06</span>
+        <div>
+          <h2>Tarjeta</h2>
+          <p class="purpose">Una tarjeta contenedora cuyo tamaño se controla <strong>desde fuera</strong> con CSS, sin tocar el componente. Demuestra cómo personalizar un componente encapsulado.</p>
+        </div>
+      </div>
+
+      <div class="demo-shadow demo-row" data-label="Shadow DOM">
+        <mi-card class="custom">Custom size using CSS</mi-card>
+        <mi-card>Default size</mi-card>
+      </div>
+
+      <pre class="code"><code>&lt;mi-card class="custom"&gt;Custom size using CSS&lt;/mi-card&gt;
+&lt;mi-card&gt;Default size&lt;/mi-card&gt;
+
+/* en la hoja de estilos de la página */
+mi-card.custom {
+  --card-width: 150px;
+  --card-height: 100px;
+}</code></pre>
+
+      <p class="note"><b>Encapsulación:</b> las <em>CSS custom properties</em> (<code>--card-width</code>, <code>--card-height</code>) son el único canal de estilo que cruza el shadow boundary. La página las define con <code>var()</code> y el componente las consume por dentro — todo lo demás queda aislado.</p>
+    </section>
+
+    <!-- ============ 7. HORIZONTAL SCROLL ============ -->
+    <section class="comp">
+      <div class="comp-head">
+        <span class="num">07</span>
+        <div>
+          <h2>Horizontal scroll</h2>
+          <p class="purpose">Un contenedor que organiza a sus hijos en una fila desplazable horizontalmente. Sirve para carruseles de tarjetas, galerías o listas que no caben en el ancho.</p>
+        </div>
+      </div>
+
+      <div class="demo-shadow" data-label="Shadow DOM">
+        <mi-horizontal-scroll>
+          <mi-card>Card 1</mi-card>
+          <mi-card>Card 2</mi-card>
+          <mi-card>Card 3</mi-card>
+          <mi-card>Card 4</mi-card>
+          <mi-card>Card 5</mi-card>
+        </mi-horizontal-scroll>
+      </div>
+
+      <pre class="code"><code>&lt;mi-horizontal-scroll&gt;
+  &lt;mi-card&gt;Card 1&lt;/mi-card&gt;
+  &lt;mi-card&gt;Card 2&lt;/mi-card&gt;
+  ...
+&lt;/mi-horizontal-scroll&gt;</code></pre>
+
+      <p class="note"><b>Encapsulación:</b> usa <code>::slotted(*)</code> para evitar que las tarjetas se encojan, aplicando estilo a los hijos proyectados <em>sin</em> sacarlos de su lugar. Composición de componentes: tarjetas dentro de un scroll, cada uno ignorante del otro.</p>
+    </section>
+
+  </main>
+
+  <footer class="foot">
+    <p>Grupo 11 - Tarea 6</p>
+  </footer>
+
+  <!-- Pequeño script vanilla para mostrar la interactividad (los eventos que emiten los componentes) -->
+  <script type="module">
+    const wire = (id, outId, key) => {
+      const el = document.getElementById(id);
+      const out = document.getElementById(outId);
+      if (!el || !out) return;
+      el.addEventListener('change', (e) => { out.textContent = e.detail[key]; });
+    };
+    wire('cn-num', 'out-num', 'value');
+    wire('cn-temp', 'out-temp', 'value');
+    wire('sl', 'out-sl', 'value');
+  </script>
 
 </body>
-
-<script>
-  const numberInput = document.getElementById("number-input")
-  const numberText = document.getElementById("number-text")
-  numberInput.addEventListener("change", (e) => {
-	  numberText.innerHTML = e.detail.value
-  })
-
-  const temperatureInput = document.getElementById("temperature-input")
-  const temperatureText = document.getElementById("temperature-text")
-  temperatureInput.addEventListener("change", (e) => {
-	  temperatureText.innerHTML = e.detail.value
-  })
-</script>
-
 </html>

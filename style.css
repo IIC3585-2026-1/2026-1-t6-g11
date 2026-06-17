@@ -1,31 +1,200 @@
+:root {
+  --ink: #16181d;
+  --body: #3a3d44;
+  --muted: #6b6f76;
+  --paper: #f4f2ec;
+  --line: #e3e0d7;
+  --accent: #5a3fd6;
+  --accent-soft: #ece7fb;
+  --mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, monospace;
+  --sans: system-ui, -apple-system, "Segoe UI", Helvetica, sans-serif;
+}
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  font-family: sans-serif;
-  padding: 32px;
-  max-width: 800px;
+  font-family: var(--sans);
+  color: var(--body);
+  background: #fbfaf7;
+  /* textura sutil de puntos: discreta, no distrae */
+  background-image: radial-gradient(var(--line) 1px, transparent 1px);
+  background-size: 22px 22px;
+  line-height: 1.65;
+}
+
+/* ---------- HERO ---------- */
+.hero {
+  max-width: 820px;
   margin: 0 auto;
-  color: #222;
+  padding: 84px 24px 48px;
+}
+.eyebrow {
+  font: 600 12px var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 18px;
+}
+.hero h1 {
+  font-size: clamp(2.6rem, 8vw, 4.4rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--ink);
+  margin-bottom: 22px;
+}
+.hero h1 .dot { color: var(--accent); }
+.tagline {
+  font-size: clamp(1.05rem, 2.5vw, 1.3rem);
+  color: var(--body);
+  max-width: 60ch;
+}
+.tagline strong { color: var(--ink); font-weight: 700; }
+.hint {
+  margin-top: 20px;
+  font-size: 0.95rem;
+  color: var(--muted);
+  max-width: 60ch;
+}
+.boundary-chip {
+  border: 1.5px dashed var(--accent);
+  border-radius: 5px;
+  padding: 0 7px;
+  color: var(--accent);
+  font-weight: 600;
+  white-space: nowrap;
 }
 
-h1 {
+/* ---------- LAYOUT ---------- */
+main {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ---------- SECCIÓN POR COMPONENTE ---------- */
+.comp {
+  padding: 40px 0;
+  border-top: 1px solid var(--line);
+}
+.comp-head {
+  display: flex;
+  gap: 18px;
+  align-items: baseline;
+  margin-bottom: 24px;
+}
+.num {
+  font: 800 1.4rem var(--mono);
+  color: var(--accent);
+  opacity: 0.55;
+  flex-shrink: 0;
+}
+.comp h2 {
   font-size: 1.5rem;
-  margin-bottom: 32px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin-bottom: 6px;
 }
-
-section {
-  margin-bottom: 48px;
-}
-
-h2 {
+.purpose {
   font-size: 1rem;
-  color: #555;
-  margin-bottom: 16px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid #eee;
+  color: var(--body);
+  max-width: 62ch;
 }
 
+/* ---------- EL SIGNATURE: shadow boundary visible ---------- */
+.demo-shadow {
+  position: relative;
+  border: 2px dashed var(--accent);
+  border-radius: 14px;
+  background: #fff;
+  padding: 34px 26px 26px;
+  margin: 8px 0 18px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 26px;
+}
+.demo-shadow::before {
+  content: attr(data-label);
+  position: absolute;
+  top: -10px;
+  left: 18px;
+  background: #fbfaf7;
+  padding: 0 8px;
+  font: 600 10px var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.demo-row { gap: 20px; }
+
+/* salida en vivo de eventos */
+.live {
+  font: 0.9rem var(--mono);
+  color: var(--muted);
+  margin: -6px 0 16px;
+}
+.live strong { color: var(--accent); }
+
+/* ---------- BLOQUE DE CÓDIGO ---------- */
+.code {
+  background: #16181d;
+  border-radius: 12px;
+  padding: 18px 20px;
+  overflow-x: auto;
+  margin-bottom: 16px;
+}
+.code code {
+  font: 13px/1.7 var(--mono);
+  color: #e4e2f5;
+  white-space: pre;
+}
+
+/* ---------- NOTA DE ENCAPSULACIÓN ---------- */
+.note {
+  background: var(--accent-soft);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 10px 10px 0;
+  padding: 14px 18px;
+  font-size: 0.94rem;
+  color: var(--ink);
+}
+.note b { color: var(--accent); }
+
+/* code inline */
+code {
+  font: 0.86em var(--mono);
+}
+.purpose code, .note code {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 1px 5px;
+}
+.note code { background: rgba(255,255,255,0.6); border-color: rgba(90,63,214,0.2); }
+
+/* ---------- FOOTER ---------- */
+.foot {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+  border-top: 1px solid var(--line);
+  margin-top: 24px;
+}
+.foot p {
+  font: 0.85rem var(--mono);
+  color: var(--muted);
+}
+
+/* ---------- tamaño custom de la tarjeta (lo pide el enunciado) ---------- */
 mi-card.custom {
   --card-width: 150px;
   --card-height: 100px;
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 560px) {
+  .comp-head { gap: 12px; }
+  .demo-shadow { padding: 30px 16px 20px; gap: 18px; }
 }
